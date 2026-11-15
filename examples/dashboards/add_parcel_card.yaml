@@ -1,4 +1,4 @@
-# Add a XLCourier parcel straight from a dashboard — no diving into the options.
+# Add an XLCourier parcel straight from a dashboard — no diving into the options.
 #
 # The integration exposes two services:
 #   - xlcourier.track_parcel   (tracking_code)
@@ -39,7 +39,7 @@ xlcourier_track_new_parcel:
 #    manual card). Type the number, press the button.
 # ---------------------------------------------------------------------------
 # type: entities
-# title: Track a XLCourier parcel
+# title: Track an XLCourier parcel
 # entities:
 #   - entity: input_text.xlcourier_new_parcel
 #   - type: button

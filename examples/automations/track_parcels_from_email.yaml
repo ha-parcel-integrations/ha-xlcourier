@@ -73,7 +73,7 @@ actions:
           task_name: xlcourier-tracking-code-extraction
           entity_id: ai_task.your_ai_task_entity
           instructions: >-
-            Below is an e-mail. Determine whether it contains a XLCourier
+            Below is an e-mail. Determine whether it contains an XLCourier
             parcel tracking code. XLCourier codes are
             XLC followed by 10 to 12 digits, or ZX followed by 8 digits. Only return a real tracking
             trace code, never an order, customer or invoice number. If the
@@ -86,7 +86,7 @@ actions:
             {{ body[:6000] }}
           structure:
             carrier:
-              description: Whether a XLCourier tracking code was found
+              description: Whether an XLCourier tracking code was found
               required: true
               selector:
                 select:
@@ -111,5 +111,5 @@ actions:
             sequence:
               - action: notify.mobile_app_your_phone
                 data:
-                  title: "📦 Tracking number found – not a XLCourier parcel"
+                  title: "📦 Tracking number found – not an XLCourier parcel"
                   message: "{{ ai_result.data.tracking_code | trim }} (mail from {{ sender }}, subject: {{ subject }})"

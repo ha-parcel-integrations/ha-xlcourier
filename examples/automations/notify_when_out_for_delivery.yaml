@@ -6,7 +6,7 @@
 # otherwise just "today".
 
 alias: "XLCourier: parcel out for delivery"
-description: Notify when a XLCourier parcel goes out for delivery today.
+description: Notify when an XLCourier parcel goes out for delivery today.
 mode: queued
 max: 10
 
