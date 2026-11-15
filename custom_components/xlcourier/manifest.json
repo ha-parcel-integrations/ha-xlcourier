@@ -1,0 +1,19 @@
+{
+  "domain": "xlcourier",
+  "name": "XLCourier",
+  "categories": [
+    "productivity_information"
+  ],
+  "codeowners": [
+    "@peter-mdf"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/ha-parcel-integrations/ha-xlcourier",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/ha-parcel-integrations/ha-xlcourier/issues",
+  "quality_scale": "silver",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.9.0"
+}
