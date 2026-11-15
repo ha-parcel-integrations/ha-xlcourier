@@ -47,7 +47,7 @@ A custom Home Assistant integration that tracks your [XLCourier](https://www.xlc
 ## Requirements
 
 - Home Assistant 2025.12 or newer
-- A XLCourier parcel and its tracking code (`XLC` followed by 10 to 12
+- An XLCourier parcel and its tracking code (`XLC` followed by 10 to 12
   digits, or `ZX` followed by 8 digits) from the shipping confirmation — no
   account needed
 
