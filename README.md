@@ -119,8 +119,8 @@ Standard HA removal applies: **Settings → Devices & Services → XLCourier →
 | `sensor.xlcourier_incoming_parcels` | Number of active tracked parcels, full list under the `parcels` attribute |
 | `sensor.xlcourier_parcel_<code>` | One per tracked parcel; state is the canonical status, attributes carry the full normalised parcel |
 | `sensor.xlcourier_next_delivery` | Earliest expected delivery moment across all active parcels (stays empty: XLCourier publishes no delivery window) |
-| `sensor.xlcourier_en_route_to_pickup_point` | Incoming parcels on their way to a pickup point that have not arrived yet (stays empty: XLCourier delivers to the door) |
-| `sensor.xlcourier_awaiting_pickup` | Incoming parcels that are ready to collect at a pickup point (stays empty: XLCourier delivers to the door) |
+| `sensor.xlcourier_en_route_to_pickup_point` | Incoming parcels on their way to a pickup point that have not arrived yet (reads 0 until XLCourier reports one) |
+| `sensor.xlcourier_awaiting_pickup` | Incoming parcels that are ready to collect at a pickup point (reads 0 until XLCourier reports one) |
 | `sensor.xlcourier_delivered_parcels` | Recently delivered parcels (see the retention option) |
 | `calendar.xlcourier_deliveries` | Read-only calendar of expected deliveries, no extra API calls (stays empty: no delivery window) |
 | `sensor.xlcourier_last_successful_update` | Diagnostic: when XLCourier was last polled successfully |

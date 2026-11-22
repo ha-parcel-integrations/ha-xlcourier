@@ -38,13 +38,16 @@ you act in one of these areas:
 - **Events and `_known_state` are built from the unfiltered delivered list.**
   The "keep N days / N parcels" option only trims `coordinator.delivered`; a
   parcel it leaves out must still fire `_parcel_delivered`.
-- **The optional pickup-point summaries are a pair.** A carrier that can tell
-  a parcel is destined for a pickup point exposes
-  `en_route_to_pickup_point` for `pickup is true` before it arrives; one that
-  can reach `ParcelStatus.AT_PICKUP_POINT` also exposes `awaiting_pickup`.
+- **The pickup-point summaries are a pair.** A carrier that can deliver to a
+  pickup point or locker exposes both `en_route_to_pickup_point` and
+  `awaiting_pickup`, even before a real parcel has shown the status or flag
+  (they read 0 until then; record it in `PENDING_*`). A carrier without pickup
+  points exposes neither and keeps `pickup` constantly False.
   See *Parcel contract* in `CONVENTIONS.md`. Say "pickup point", not
   "ServicePoint"/"parcel shop"/"locker", for the generic concept; the
   example carrier demonstrates both canonical sensors.
+  XLCourier has both: no scan type maps to `AT_PICKUP_POINT` yet, so they read 0
+  until XLCourier reports a delivery to a pickup point (pending evidence).
 
 ## Carrier-specific notes
 
@@ -53,7 +56,10 @@ you act in one of these areas:
   to the newest mappable scan, then `unknown`, each with a one-shot WARNING.
   `200` and `900` share the title "Scheduled", so never key on the title.
 - **A failed delivery shows `problem` only until the next scan.** Returned
-  (`1500`) is `returning`, never `delivered`.
+  (`1500`) is `returning` and `delivered` stays `False`. Divergence from the
+  contract, which counts a parcel back at the sender as delivered: no return
+  has been seen on a real parcel yet (issue #2), so the finished-return
+  behaviour waits for one.
 - **`recipient_address`, `postcode`, `events[].reason` and `events[].pods`
   (proof-of-delivery photo URLs, open to anyone with the link) are PII.**
   They never become a top-level parcel field or a log line, and are redacted
@@ -69,8 +75,12 @@ you act in one of these areas:
   `events` list or a bot-check page is inconclusive: the last good data is
   kept and a one-shot WARNING is logged.
 - **`None` on purpose:** weight, dimensions, delivery window, sender,
-  receiver, pickup and pickup point. `CAPABILITIES` is `url` and `history`.
-  `next_delivery`, the calendar and the pickup summaries therefore stay empty.
+  receiver and pickup point. `pickup` is `is_pickup(None, status,
+  event statuses)`: it turns true only once a scan maps to `AT_PICKUP_POINT`
+  (none does yet); the "pickup" wording on types 200-500 is a collection from
+  the sender and must not set it. `pickup_point` stays `None` until a real
+  name is seen. `CAPABILITIES` is `url` and `history`. `next_delivery` and the
+  calendar therefore stay empty.
 - **Pre-1.0:** most event types are unseen on the wire; every unknown logs a
   one-shot WARNING with the issue link and never the scan text.
 

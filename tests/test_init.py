@@ -188,3 +188,33 @@ async def test_entry_write_without_an_options_change_does_not_refresh(hass):
             )
             await hass.async_block_till_done()
             assert refresh.call_count == 1
+
+
+async def test_pickup_sensors_register_and_survive_the_stale_sweep(hass):
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id=DOMAIN,
+        options={CONF_PARCELS: [{CONF_TRACKING_CODE: ACTIVE_CODE}]},
+    )
+    entry.add_to_hass(hass)
+    registry = er.async_get(hass)
+    registry.async_get_or_create(
+        "sensor",
+        DOMAIN,
+        f"{entry.entry_id}_awaiting_pickup",
+        config_entry=entry,
+    )
+
+    with patch(
+        "custom_components.xlcourier.api.XLCourierApiClient.async_get_parcel",
+        new=AsyncMock(return_value=_sample()),
+    ):
+        assert await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    for suffix in ("awaiting_pickup", "en_route_to_pickup_point"):
+        entity_id = registry.async_get_entity_id(
+            "sensor", DOMAIN, f"{entry.entry_id}_{suffix}"
+        )
+        assert entity_id
+        assert hass.states.get(entity_id).state == "0"

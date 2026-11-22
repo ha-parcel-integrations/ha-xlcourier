@@ -316,7 +316,7 @@ def test_normalize_delivered_parcel():
     )
     assert parcel["delivered"] is True
     assert parcel["delivered_at"] == "2026-10-12T15:25:23+01:00"
-    assert parcel["pickup"] is None
+    assert parcel["pickup"] is False
     assert parcel["pickup_point"] is None
     assert (
         parcel["url"] == f"https://www.xlcourier.com/trackOrder?number={DELIVERED_CODE}"
