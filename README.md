@@ -40,6 +40,7 @@ A custom Home Assistant integration that tracks your [XLCourier](https://www.xlc
 - Summary sensors: incoming parcels, next delivery, recently delivered parcels
 - Read-only **Deliveries** calendar
 - `xlcourier.track_parcel` / `xlcourier.untrack_parcel` services, so a dashboard button can add a parcel
+- A `contents` field on every parcel, set in your own words with the `xlcourier.update_contents` service or the `contents` field of `xlcourier.track_parcel`; it titles the calendar event and shows on the next-delivery sensor
 - Events + device triggers for no-code automations (parcel registered, status changed, delivered, delivery time changed)
 - Opt-in per-parcel status history
 - Manual refresh button and a diagnostic last-update sensor
@@ -163,8 +164,11 @@ Every payload is the full normalised parcel plus the hub's `device_id`. Events a
 
 | Service | Fields | Description |
 |---|---|---|
-| `xlcourier.track_parcel` | `tracking_code` | Start tracking a parcel |
+| `xlcourier.track_parcel` | `tracking_code`, `contents` (optional) | Start tracking a parcel, optionally noting what is in it |
 | `xlcourier.untrack_parcel` | `tracking_code` | Stop tracking a parcel |
+| `xlcourier.update_contents` | `tracking_code`, `contents` (optional) | Set, replace or clear (empty text) a note on what is in a parcel, tracked or not |
+
+The `contents` text is stored locally, never sent to XLCourier, and fills the parcel's `contents` field; it titles the parcel's calendar event and shows on the next-delivery sensor.
 
 ## Examples
 
